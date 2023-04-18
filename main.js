@@ -7,7 +7,6 @@ function readFilePromise() {
         .then(response=> {
             if(!response.ok) {
                 throw new Error('Fetch error: '+ response.status);
-
             }
             return response.json();
         })
@@ -17,12 +16,29 @@ function readFilePromise() {
         .catch(error => {
             console.log('Error: ' + error);
         });
-
-
-
 }
+    //Assync function
+    async function readFileAsync(){
+        let data = await fetch('customers.json');
+        let customers = await data.json();
+        generateHTML(customers);
+    }
+     //Assync function with error handling
+    async function readFileAsync2(){
+        try
+        {
+            let data = await fetch('customers.json');
+            let customers = await data.json();
+            generateHTML(customers);
+        }   
+        catch
+        {
+            console.log('Could not read from json file.');
+        }
+    }
 
-// generate HTML
+
+// Render HTML
 
 function generateHTML(customers) {
     let html = '';
@@ -40,3 +56,5 @@ function generateHTML(customers) {
     document.querySelector('body').append(customerDiv);
 }
 readFilePromise();
+readFileAsync();
+readFileAsync2();
